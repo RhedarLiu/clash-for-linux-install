@@ -19,7 +19,7 @@ _set_bin "$RESOURCES_BIN_DIR"
 _valid_config "$RESOURCES_CONFIG" || {
     echo -n "$(_okcat '✈️ ' '输入订阅：')"
     read -r url
-    echo -n "$(_okcat '🌐 ' "输入拉取订阅的 User-Agent（默认 ${CLASH_DEFAULT_USER_AGENT}）：")"
+    echo -n "$(_okcat '🌐 ' "输入拉取订阅的 User-Agent [默认 ${CLASH_DEFAULT_USER_AGENT}]：")"
     read -r agent
     [ -n "$agent" ] && echo "$agent" | sudo tee "$CLASH_USER_AGENT" >/dev/null
     _okcat '⏳' '正在下载...'
