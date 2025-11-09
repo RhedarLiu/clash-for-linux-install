@@ -6,6 +6,7 @@
 
 URL_GH_PROXY='https://gh-proxy.com/'
 URL_CLASH_UI="http://board.zash.run.place"
+CLASH_DEFAULT_USER_AGENT='clash-verge/v2.0.4'
 
 SCRIPT_BASE_DIR='./script'
 SCRIPT_FISH="${SCRIPT_BASE_DIR}/clashctl.fish"
@@ -25,6 +26,7 @@ ZIP_UI="${ZIP_BASE_DIR}/yacd.tar.xz"
 CLASH_BASE_DIR='/opt/clash'
 CLASH_SCRIPT_DIR="${CLASH_BASE_DIR}/$(basename $SCRIPT_BASE_DIR)"
 CLASH_CONFIG_URL="${CLASH_BASE_DIR}/url"
+CLASH_USER_AGENT="${CLASH_BASE_DIR}/user-agent"
 CLASH_CONFIG_RAW="${CLASH_BASE_DIR}/$(basename $RESOURCES_CONFIG)"
 CLASH_CONFIG_RAW_BAK="${CLASH_CONFIG_RAW}.bak"
 CLASH_CONFIG_MIXIN="${CLASH_BASE_DIR}/$(basename $RESOURCES_CONFIG_MIXIN)"
@@ -292,7 +294,8 @@ _download_clash() {
 _download_raw_config() {
     local dest=$1
     local url=$2
-    local agent='clash-verge/v2.0.4'
+    local agent
+    [ -f "$CLASH_USER_AGENT" ] && agent=$(cat "$CLASH_USER_AGENT") || agent=$CLASH_DEFAULT_USER_AGENT
     sudo curl \
         --silent \
         --show-error \

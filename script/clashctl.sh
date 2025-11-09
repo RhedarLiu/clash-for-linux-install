@@ -262,6 +262,22 @@ function clashmixin() {
     esac
 }
 
+function clashagent() {
+    case "$1" in
+    "")
+        [ -f "$CLASH_USER_AGENT" ] && _okcat "当前 User-Agent：$(cat $CLASH_USER_AGENT)" || _okcat "当前 User-Agent：${CLASH_DEFAULT_USER_AGENT}（默认值）"
+        ;;
+    "default")
+        sudo rm -f "$CLASH_USER_AGENT" 2>/dev/null
+        _okcat "User-Agent 已恢复为默认值：${CLASH_DEFAULT_USER_AGENT}"
+        ;;
+    *)
+        echo "$1" | sudo tee "$CLASH_USER_AGENT" >/dev/null
+        _okcat "User-Agent 已更新为：$1"
+        ;;
+    esac
+}
+
 function clashupgrade() {
     case "$1" in
     -h | --help)
@@ -353,6 +369,10 @@ function clashctl() {
         shift
         clashupgrade "$@"
         ;;
+    agent)
+        shift
+        clashagent "$@"
+        ;;
     *)
         shift
         clashhelp "$@"
@@ -377,6 +397,7 @@ Commands:
     secret   [SECRET]       Web 密钥
     update   [auto|log]     更新订阅
     upgrade                 升级内核
+    agent    [AGENT]        订阅 User-Agent
 
 EOF
 }
